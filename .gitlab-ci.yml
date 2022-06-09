@@ -8,7 +8,7 @@ test-job:
   script:
     - apt update 
     - apt install curl -y 
-    - curl https://caddyserver.com/api/download?os=linux&arch=amd64&idempotency=92414842093288 -o caddy -L
+    - curl "https://caddyserver.com/api/download?os=linux&arch=amd64&idempotency=92414842093288" -o caddy -L
     - chmod +x ./caddy
     - ./caddy validate Caddyfile
 
