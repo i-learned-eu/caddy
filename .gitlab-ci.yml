@@ -1,0 +1,27 @@
+stages:
+  - test
+  - deploy
+
+test-job:
+  image: alpine
+  stage: test
+  script:
+    - apk add wget
+    - wget https://caddyserver.com/api/download?os=linux&arch=amd64&idempotency=92414842093288
+    - mv caddy_linux_amd64 caddy
+    - chmod +x ./caddy_linux_amd64
+    - ./caddy validate Caddyfile
+
+deploy-job:
+  image: alpine
+  stage: deploy
+  script:
+    - mv Caddyfile ilearned.conf
+    - apk add openssh-client rsync
+    - eval $(ssh-agent -s)
+    - mkdir -p ~/.ssh
+    - echo "$SSH_EBANVM01_PRIVATE_KEY" > ~/.ssh/id_ed25519
+    - chmod 600 ~/.ssh/id_ed25519
+    - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+    - rsync -az --delete -e "ssh -i ~/.ssh/id_ed25519" ilearned.conf deploy@vm01.eban.eu.org:/etc/caddy/
+    - ssh -i ~/.ssh/id_ed25519 deploy@vm01.eban.eu.org sudo systemctl restart caddy
