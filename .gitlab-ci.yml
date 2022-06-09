@@ -6,8 +6,8 @@ test-job:
   image: alpine
   stage: test
   script:
-    - apk add wget
-    - wget -O caddy https://caddyserver.com/api/download?os=linux&arch=amd64&idempotency=92414842093288
+    - apk add curl
+    - curl https://caddyserver.com/api/download?os=linux&arch=amd64&idempotency=92414842093288 -o caddy -L
     - chmod +x ./caddy
     - ./caddy validate Caddyfile
 
