@@ -1,0 +1,112 @@
+{
+	servers :443 {
+		protocol { experimental_http3
+		}
+	}
+}
+
+en.ilearned.eu.org {
+    redir https://en.ilearned.eu{uri}
+}
+
+
+discord.ilearned.eu {
+    redir https://discord.gg/ZyWUJYSc3C
+}
+
+ilearned.eu.org {
+    redir https://blog.ilearned.eu{uri}
+}
+
+ilearned.eu {
+    root * /var/www/ilearned
+    file_server
+    encode zstd gzip
+
+    @dontMatchMainURI {
+        path *.html
+        path *.xml
+        not path /
+        not path /index.html
+        not path /contributors.html
+        not path /projects.html
+    }
+
+    redir @dontMatchMainURI https://blog.ilearned.eu{uri}
+
+    header {
+    	Content-Security-Policy default-src 'self'; script-src 'report-sample' 'self' https://cdn.ilearned.eu/js/header.js; style-src 'report-sample' 'self' https://cdn.ilearned.eu; object-src 'none'; base-uri 'self'; connect-src 'self'; font-src 'self' https://cdn.ilearned.eu; frame-src 'self'; img-src 'self' https://cdn.ilearned.eu; manifest-src 'self'; media-src 'self'; report-uri https://625e8f4c1e8c404e5a8b91ff.endpoint.csper.io/?v=0; worker-src 'none';
+	Permissions-Policy accelerometer=(), ambient-light-sensor=(), autoplay=(), battery=(), camera=(), cross-origin-isolated=(), display-capture=(), document-domain=(), encrypted-media=(), execution-while-not-rendered=(), execution-while-out-of-viewport=(), fullscreen=(self), geolocation=(), gyroscope=(), keyboard-map=(), magnetometer=(), microphone=(), midi=(), navigation-override=(), payment=(), picture-in-picture=(self), publickey-credentials-get=(), screen-wake-lock=(), sync-xhr=(), usb=(), web-share=(self), xr-spatial-tracking=(), clipboard-read=(), clipboard-write=(), gamepad=(), speaker-selection=(), conversion-measurement=(), focus-without-user-activation=(), hid=(), idle-detection=(), interest-cohort=(), serial=(), sync-script=(), trust-token-redemption=(), window-placement=(), vertical-scroll=(self)
+	Strict-Transport-Security max-age=31536000;
+	X-Content-Type-Options nosniff
+	X-Frame-Options DENY
+	Referrer-Policy no-referrer-when-downgrade
+    }
+
+    log {
+        format formatted `{request>remote_ip} - {request>user_id} [{ts}] "{request>method} {request>uri} {request>proto}" {status} {size} "{request>headers>Referer>[0]}" "{request>headers>User-Agent>[0]}"` {
+            time_format "02/Jan/2006:15:04:05 -0700"
+        }
+        output file /var/log/caddy/ilearned-main-french.log
+    }
+}
+
+blog.ilearned.eu {
+    root * /var/www/ilearned-blog
+    file_server
+    encode zstd gzip
+    header {
+        Access-Control-Allow-Origin "https://analytics.ilearned.eu"
+    	Content-Security-Policy default-src 'self'; script-src 'report-sample' 'self' https://cdn.ilearned.eu/js/header.js; style-src 'report-sample' 'self' https://cdn.ilearned.eu; object-src 'none'; base-uri 'self'; connect-src 'self'; font-src 'self' https://cdn.ilearned.eu; frame-src 'self'; img-src 'self' https://cdn.ilearned.eu; manifest-src 'self'; media-src 'self'; report-uri https://625e8f4c1e8c404e5a8b91ff.endpoint.csper.io/?v=0; worker-src 'none';
+	Permissions-Policy accelerometer=(), ambient-light-sensor=(), autoplay=(), battery=(), camera=(), cross-origin-isolated=(), display-capture=(), document-domain=(), encrypted-media=(), execution-while-not-rendered=(), execution-while-out-of-viewport=(), fullscreen=(self), geolocation=(), gyroscope=(), keyboard-map=(), magnetometer=(), microphone=(), midi=(), navigation-override=(), payment=(), picture-in-picture=(self), publickey-credentials-get=(), screen-wake-lock=(), sync-xhr=(), usb=(), web-share=(self), xr-spatial-tracking=(), clipboard-read=(), clipboard-write=(), gamepad=(), speaker-selection=(), conversion-measurement=(), focus-without-user-activation=(), hid=(), idle-detection=(), interest-cohort=(), serial=(), sync-script=(), trust-token-redemption=(), window-placement=(), vertical-scroll=(self)
+	Strict-Transport-Security max-age=31536000;
+	X-Content-Type-Options nosniff
+	X-Frame-Options DENY
+	Referrer-Policy no-referrer-when-downgrade
+    }
+
+    handle_errors {
+        rewrite * /theme/error.html
+        templates
+        file_server
+    }
+
+    log {
+        format formatted `{request>remote_ip} - {request>user_id} [{ts}] "{request>method} {request>uri} {request>proto}" {status} {size} "{request>headers>Referer>[0]}" "{request>headers>User-Agent>[0]}"` {
+            time_format "02/Jan/2006:15:04:05 -0700"
+        }
+        output file /var/log/caddy/ilearned-blog-french.log
+    }
+}
+
+analytics.ilearned.eu {
+    root * /var/www/ilearned-analytics
+    file_server
+    encode zstd gzip
+}
+
+en.ilearned.eu {
+    root * /var/www/ilearned-en
+    file_server
+    encode zstd gzip
+    header Access-Control-Allow-Origin "https://analytics.ilearned.eu"
+
+    log {
+        format formatted `{request>remote_ip} - {request>user_id} [{ts}] "{request>method} {request>uri} {request>proto}" {status} {size} "{request>headers>Referer>[0]}" "{request>headers>User-Agent>[0]}"` {
+            time_format "02/Jan/2006:15:04:05 -0700"
+        }
+        output file /var/log/caddy/ilearned-blog-english.log
+    }
+}
+
+commento.ilearned.eu {
+    reverse_proxy 127.0.0.1:8080    
+}
+
+
+cdn.ilearned.eu {
+    root * /var/www/ilearned-cdn
+    file_server
+    encode zstd gzip
+    header Access-Control-Allow-Origin "*"
+}
