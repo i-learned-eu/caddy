@@ -6,6 +6,7 @@ test-job:
   image: debian
   stage: test
   script:
+    - apt update 
     - apt install curl
     - curl https://caddyserver.com/api/download?os=linux&arch=amd64&idempotency=92414842093288 -o caddy -L
     - chmod +x ./caddy
@@ -16,6 +17,7 @@ deploy-job:
   stage: deploy
   script:
     - mv Caddyfile ilearned.conf
+    - apt update 
     - apt install openssh-client rsync
     - eval $(ssh-agent -s)
     - mkdir -p ~/.ssh
