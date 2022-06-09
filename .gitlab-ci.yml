@@ -7,8 +7,7 @@ test-job:
   stage: test
   script:
     - apk add wget
-    - wget https://caddyserver.com/api/download?os=linux&arch=amd64&idempotency=92414842093288
-    - mv caddy_linux_amd64 caddy
+    - wget -O caddy https://caddyserver.com/api/download?os=linux&arch=amd64&idempotency=92414842093288
     - chmod +x ./caddy_linux_amd64
     - ./caddy validate Caddyfile
 
