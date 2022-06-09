@@ -3,20 +3,20 @@ stages:
   - deploy
 
 test-job:
-  image: alpine
+  image: debian
   stage: test
   script:
-    - apk add curl
+    - apt install curl
     - curl https://caddyserver.com/api/download?os=linux&arch=amd64&idempotency=92414842093288 -o caddy -L
     - chmod +x ./caddy
     - ./caddy validate Caddyfile
 
 deploy-job:
-  image: alpine
+  image: debian
   stage: deploy
   script:
     - mv Caddyfile ilearned.conf
-    - apk add openssh-client rsync
+    - apt install openssh-client rsync
     - eval $(ssh-agent -s)
     - mkdir -p ~/.ssh
     - echo "$SSH_EBANVM01_PRIVATE_KEY" > ~/.ssh/id_ed25519
