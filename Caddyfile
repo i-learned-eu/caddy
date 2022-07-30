@@ -86,6 +86,12 @@ analytics.ilearned.eu {
     encode zstd gzip
 }
 
+cb.ilearned.eu {
+    root * /var/www/ilearned-cb
+    file_server
+    encode zstd gzip
+}
+
 en.ilearned.eu {
     root * /var/www/ilearned-en
     file_server
