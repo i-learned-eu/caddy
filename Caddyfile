@@ -116,4 +116,8 @@ cdn.ilearned.eu {
     file_server
     encode zstd gzip
     header Access-Control-Allow-Origin "*"
+    header /img/* Cache-Control max-age=31536000
+    header /fonts/* Cache-Control max-age=31536000
+    header /css/* Cache-Control max-age=36000
+    header /js/* Cache-Control max-age=36000
 }
