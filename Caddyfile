@@ -42,6 +42,7 @@ ilearned.eu {
 	    X-Content-Type-Options nosniff
 	    X-Frame-Options DENY
 	    Referrer-Policy no-referrer-when-downgrade
+        /static/* Cache-Control "max-age=86400"
     }
 
     log {
@@ -64,6 +65,7 @@ blog.ilearned.eu {
 	    X-Content-Type-Options nosniff
 	    X-Frame-Options DENY
 	    Referrer-Policy no-referrer-when-downgrade
+        /static/* Cache-Control "max-age=86400"
     }
 
     handle_errors {
@@ -122,10 +124,12 @@ cdn.ilearned.eu {
     root * /var/www/ilearned-cdn
     file_server
     encode zstd gzip
-    header Access-Control-Allow-Origin "*"
-    header /img/* Cache-Control max-age=31536000
-    header /fonts/* Cache-Control max-age=31536000
-    header /css/* Cache-Control max-age=36000
-    header /js/* Cache-Control max-age=36000
-    header Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+    header {
+        Access-Control-Allow-Origin "*"
+        /img/* Cache-Control "max-age=31536000"
+        /fonts/* Cache-Control "max-age=31536000"
+        /css/* Cache-Control "max-age=86400"
+        /js/* Cache-Control "max-age=86400"
+        Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+    }
 }
