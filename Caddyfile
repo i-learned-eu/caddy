@@ -59,7 +59,7 @@ blog.ilearned.eu {
     encode zstd gzip
     header {
         Access-Control-Allow-Origin "https://analytics.ilearned.eu"
-    	Content-Security-Policy "default-src 'self'; script-src 'report-sample' 'self' https://cdn.ilearned.eu/js/header.js; style-src 'report-sample' 'self' https://cdn.ilearned.eu; object-src 'none'; base-uri 'self'; connect-src 'self'; font-src 'self' https://cdn.ilearned.eu; frame-src 'self'; img-src 'self' https://cdn.ilearned.eu; manifest-src 'self'; media-src 'self'; report-uri https://625e8f4c1e8c404e5a8b91ff.endpoint.csper.io/?v=0; worker-src 'none';"
+    	Content-Security-Policy "default-src 'self'; script-src 'report-sample' 'self' https://cdn.ilearned.eu/js/header.js https://commento.ilearned.eu/; style-src 'report-sample' 'self' https://cdn.ilearned.eu https://commento.ilearned.eu; object-src 'none'; base-uri 'self'; connect-src 'self' https://commento.ilearned.eu; font-src 'self' https://cdn.ilearned.eu https://commento.ilearned.eu/; frame-src 'self'; img-src 'self' https://cdn.ilearned.eu https://commento.ilearned.eu/; manifest-src 'self'; media-src 'self'; report-uri https://625e8f4c1e8c404e5a8b91ff.endpoint.csper.io/?v=0; worker-src 'none';"
 	    Permissions-Policy "fullscreen=(self), picture-in-picture=(self), web-share=(self), vertical-scroll=(self)"
 	    Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
 	    X-Content-Type-Options nosniff
