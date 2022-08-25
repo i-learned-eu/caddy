@@ -36,7 +36,7 @@ ilearned.eu {
     redir @dontMatchMainURI https://blog.ilearned.eu{uri}
 
     header {
-    	Content-Security-Policy "default-src 'self'; script-src 'report-sample' 'self' https://cdn.ilearned.eu/js/header.js; style-src 'report-sample' 'self' https://cdn.ilearned.eu; object-src 'none'; base-uri 'self'; connect-src 'self'; font-src 'self' https://cdn.ilearned.eu; frame-src 'self'; img-src 'self' https://cdn.ilearned.eu; manifest-src 'self'; media-src 'self'; report-uri https://625e8f4c1e8c404e5a8b91ff.endpoint.csper.io/?v=0; worker-src 'none';"
+    	Content-Security-Policy "default-src 'self'; script-src 'unsafe-inline' 'self' https://cdn.ilearned.eu/js/header.js; style-src 'self' https://cdn.ilearned.eu; object-src 'none'; font-src 'self' https://cdn.ilearned.eu; img-src 'self' https://cdn.ilearned.eu; worker-src 'none';"
 	    Permissions-Policy "fullscreen=(self), picture-in-picture=(self), web-share=(self), vertical-scroll=(self)"
         Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
 	    X-Content-Type-Options nosniff
