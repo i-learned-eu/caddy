@@ -1,0 +1,33 @@
+name: Copy zone
+
+on:
+  push:
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Requirement
+        run: |
+          apt update 
+          apt install curl -y 
+          curl "https://caddyserver.com/api/download?os=linux&arch=amd64&p=github.com%2Fcaddyserver%2Ftransform-encoder&idempotency=50221389932893" -o caddy -L
+          chmod +x ./caddy          
+      - name: Lint
+        run: |
+          ./caddy validate Caddyfile
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Copy config
+        run: |
+          mkdir ${HOME}/.ssh
+          echo "${{secrets.DEPLOY_KEY}}" > ${HOME}/.ssh/id_ed25519
+          chmod 600 ${HOME}/.ssh/id_ed25519
+          echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ${HOME}/.ssh/config
+          eval $(ssh-agent -s)
+          export EPOCH_TIME=$(date +%s)
+          scp -i ${HOME}/.ssh/id_ed25519 ilearned.conf deploy@vm01.eban.eu.org:/etc/caddy/
+          ssh -i ${HOME}/.ssh/id_ed25519 deploy@vm01.eban.eu.org sudo /bin/systemctl restart caddy
